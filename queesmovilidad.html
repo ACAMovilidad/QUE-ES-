@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movilidad ACA - Sistema Integral 1904-2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .accent-blue {
+            color: #1e3a8a;
+        }
+
+        .bg-accent {
+            background-color: #1e3a8a;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-elevated {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-elevated:hover {
+            box-shadow: 0 20px 40px -5px rgba(30, 58, 138, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .pillar-card {
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .pillar-card:hover {
+            border-left-color: #1e3a8a;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .concept-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .number-badge {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(30, 58, 138, 0.3);
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #1e3a8a, #3b82f6, #06b6d4);
+            transform: translateX(-50%);
+        }
+
+        .hero-pattern {
+            background-image: radial-gradient(circle at 1px 1px, #cbd5e1 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .scroll-reveal {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            header nav, header button, #pdfBtn, #pdfBtnMobile {
+                display: none !important;
+            }
+            section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .card-elevated, .pillar-card {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center text-white font-bold text-xl font-display">A</div>
+                <div>
+                    <p class="font-bold text-gray-900 text-sm tracking-wide">AUTOMÓVIL CLUB ARGENTINO</p>
+                    <p class="text-xs text-gray-500">Sistema de Movilidad</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-600 items-center">
+                <a href="#concepto" class="hover:text-blue-900 transition-colors">El Concepto</a>
+                <a href="#sistema" class="hover:text-blue-900 transition-colors">El Sistema</a>
+                <a href="#pilares" class="hover:text-blue-900 transition-colors">7 Pilares</a>
+                <a href="#historia" class="hover:text-blue-900 transition-colors">1904-2026</a>
+                <button id="pdfBtn" class="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    <span id="pdfBtnText">Descargar PDF</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="relative min-h-screen flex items-center justify-center hero-pattern py-20">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 float-animation"></div>
+            <div class="absolute bottom-20 right-10 w-72 h-72 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 float-animation" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-block mb-6 px-4 py-2 bg-blue-50 rounded-full text-sm font-medium text-blue-700 border border-blue-200">
+                    1904 — 2026 · 122 Años de Sistema
+                </div>
+
+                <h1 class="font-display text-5xl md:text-7xl font-bold mb-8 leading-tight text-gray-900">
+                    Movilidad es un<br>
+                    <span class="gradient-text italic">sistema integral</span>
+                </h1>
+
+                <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-12">
+                    Un sistema de <strong class="text-gray-900">ideas, proyectos y acciones</strong> que damos sentido cuando se apropian correctamente.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 text-sm">
+                    <span class="px-4 py-2 bg-white rounded-lg border border-gray-200 shadow-sm">7 Pilares Estructurales</span>
+                    <span class="px-4 py-2 bg-white rounded-lg border border-gray-200 shadow-sm">122 Años de Evolución</span>
+                    <span class="px-4 py-2 bg-white rounded-lg border border-gray-200 shadow-sm">Un Solo Sistema</span>
+                </div>
+
+                <div class="mt-8 md:hidden">
+                    <button id="pdfBtnMobile" class="flex items-center gap-2 px-6 py-3 bg-accent text-white rounded-xl text-sm font-bold hover:bg-blue-800 transition-colors shadow-lg mx-auto">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span id="pdfBtnMobileText">Descargar PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- El Concepto -->
+    <section id="concepto" class="py-20 md:py-28 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16 scroll-reveal">
+                    <div class="inline-block mb-4 px-4 py-2 bg-blue-50 rounded-full text-sm font-bold text-blue-700 uppercase tracking-wider border border-blue-200">
+                        El Concepto
+                    </div>
+                    <h2 class="font-display text-3xl md:text-5xl text-gray-900 mb-4">
+                        Movilidad con <span class="gradient-text">sentido propio</span>
+                    </h2>
+                </div>
+
+                <div class="scroll-reveal">
+                    <div class="bg-gray-50 rounded-2xl p-8 md:p-12 border-l-4 border-blue-600">
+                        <p class="font-display text-2xl md:text-3xl text-gray-800 leading-relaxed mb-6">
+                            "Movilidad" es una palabra que muchos usan, pero pocos le dan contenido real. En el ACA, le damos <span class="text-blue-600">sentido propio</span> a través de un sistema operativo concreto.
+                        </p>
+                        <p class="text-gray-600 text-lg">
+                            Las tendencias globales —smart cities, micromovilidad, electromovilidad— solo cobran sentido cuando se traducen en un sistema de ideas, proyectos y acciones organizadas.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 mt-12">
+                    <div class="card-elevated rounded-xl p-6 text-center border-t-4 border-blue-500">
+                        <div class="text-4xl mb-3">💡</div>
+                        <h3 class="font-bold text-blue-900 mb-2">Ideas</h3>
+                        <p class="text-gray-600 text-sm">Visión estratégica y conocimiento técnico que orientan el sistema.</p>
+                    </div>
+                    <div class="card-elevated rounded-xl p-6 text-center border-t-4 border-purple-500">
+                        <div class="text-4xl mb-3">📐</div>
+                        <h3 class="font-bold text-purple-900 mb-2">Proyectos</h3>
+                        <p class="text-gray-600 text-sm">Planificación estructurada con objetivos claros y métricas.</p>
+                    </div>
+                    <div class="card-elevated rounded-xl p-6 text-center border-t-4 border-cyan-500">
+                        <div class="text-4xl mb-3">⚡</div>
+                        <h3 class="font-bold text-cyan-900 mb-2">Acciones</h3>
+                        <p class="text-gray-600 text-sm">Implementación concreta con resultados tangibles y medibles.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- El Sistema -->
+    <section id="sistema" class="py-20 md:py-28 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="font-display text-3xl md:text-5xl text-gray-900 mb-4">
+                        El Sistema <span class="gradient-text">ACA</span>
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Un sistema operativo que organiza ideas, proyectos y acciones bajo una estructura de 7 pilares interconectados.
+                    </p>
+                </div>
+
+                <div class="scroll-reveal">
+                    <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100">
+                        <div class="text-center mb-8">
+                            <div class="inline-flex items-center gap-3 bg-accent text-white px-8 py-4 rounded-2xl">
+                                <span class="text-3xl font-bold font-display">7</span>
+                                <div class="text-left">
+                                    <p class="font-bold text-lg">Pilares Estructurales</p>
+                                    <p class="text-blue-200 text-sm">Interconectados y operativos</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-center text-gray-600 mb-8">
+                            Cada pilar es un subsistema operativo con ideas, proyectos y acciones específicas. 
+                            Juntos conforman la totalidad del sistema de movilidad ACA.
+                        </p>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div class="bg-blue-50 rounded-lg p-3 text-center border border-blue-100">
+                                <div class="font-bold text-blue-800 text-sm">1. Educación</div>
+                            </div>
+                            <div class="bg-red-50 rounded-lg p-3 text-center border border-red-100">
+                                <div class="font-bold text-red-800 text-sm">2. Deporte Motor</div>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-3 text-center border border-green-100">
+                                <div class="font-bold text-green-800 text-sm">3. Corporativo</div>
+                            </div>
+                            <div class="bg-purple-50 rounded-lg p-3 text-center border border-purple-100">
+                                <div class="font-bold text-purple-800 text-sm">4. Institucional</div>
+                            </div>
+                            <div class="bg-orange-50 rounded-lg p-3 text-center border border-orange-100">
+                                <div class="font-bold text-orange-800 text-sm">5. Infraestructura</div>
+                            </div>
+                            <div class="bg-teal-50 rounded-lg p-3 text-center border border-teal-100">
+                                <div class="font-bold text-teal-800 text-sm">6. Sostenibilidad</div>
+                            </div>
+                            <div class="col-span-2 bg-indigo-50 rounded-lg p-3 text-center border-2 border-indigo-200">
+                                <div class="font-bold text-indigo-800 text-sm">7. Comunicación (Conector)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Los 7 Pilares -->
+    <section id="pilares" class="py-20 md:py-28 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="font-display text-3xl md:text-5xl text-gray-900 mb-4">
+                        Los <span class="gradient-text">7 Pilares</span> del Sistema
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Cada pilar es un subsistema operativo con ideas, proyectos y acciones específicas.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 1. Educación -->
+                    <div class="card-elevated pillar-card rounded-xl p-8 scroll-reveal">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="number-badge">1</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-900">Educación y Formación</h3>
+                                <p class="text-sm text-blue-600">Base del sistema</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Capacitación técnica continua, formación de conductores, certificaciones profesionales y transferencia de conocimiento. La educación como habilitador de toda movilidad segura.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="concept-tag bg-blue-50 text-blue-700">Escuelas de conducción</span>
+                            <span class="concept-tag bg-blue-50 text-blue-700">Capacitación corporativa</span>
+                            <span class="concept-tag bg-blue-50 text-blue-700">Certificaciones</span>
+                            <span class="concept-tag bg-blue-50 text-blue-700">Simuladores</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Deporte Motor -->
+                    <div class="card-elevated pillar-card rounded-xl p-8 scroll-reveal">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="number-badge">2</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-900">Sinergia Deporte Motor</h3>
+                                <p class="text-sm text-red-600">Excelencia e innovación</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Laboratorio vivo de tecnología, seguridad y performance. El deporte motor como catalizador de innovación que se transfiere a la movilidad cotidiana.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="concept-tag bg-red-50 text-red-700">Turismo Carretera</span>
+                            <span class="concept-tag bg-red-50 text-red-700">TC2000</span>
+                            <span class="concept-tag bg-red-50 text-red-700">Rally Argentino</span>
+                            <span class="concept-tag bg-red-50 text-red-700">Desarrollo tecnológico</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. Corporativo -->
+                    <div class="card-elevated pillar-card rounded-xl p-8 scroll-reveal">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="number-badge">3</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-900">Propuestas Corporativas</h3>
+                                <p class="text-sm text-green-600">Soluciones B2B</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Gestión integral de flotas, asistencia en ruta, compliance normativo y consultoría en movilidad empresarial. Soluciones end-to-end para organizaciones.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="concept-tag bg-green-50 text-green-700">Fleet management</span>
+                            <span class="concept-tag bg-green-50 text-green-700">Asistencia 24/7</span>
+                            <span class="concept-tag bg-green-50 text-green-700">Risk management</span>
+                            <span class="concept-tag bg-green-50 text-green-700">Consultoría</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. Institucional -->
+                    <div class="card-elevated pillar-card rounded-xl p-8 scroll-reveal">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="number-badge">4</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-900">Sinergias Institucionales</h3>
+                                <p class="text-sm text-purple-600">Relaciones estratégicas</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Alianzas con organismos gubernamentales, municipios, provincias y entidades internacionales. Capacidad de incidencia en políticas públicas de movilidad.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="concept-tag bg-purple-50 text-purple-700">Gobierno nacional</span>
+                            <span class="concept-tag bg-purple-50 text-purple-700">Municipios</span>
+                            <span class="concept-tag bg-purple-50 text-purple-700">FIA</span>
+                            <span class="concept-tag bg-purple-50 text-purple-700">Clubes internacionales</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Infraestructura -->
+                    <div class="card-elevated pillar-card rounded-xl p-8 scroll-reveal">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="number-badge">5</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-900">Infraestructura</h3>
+                                <p class="text-sm text-orange-600">Red física y digital</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Red de estaciones de servicio, hoteles, centros de asistencia, y plataformas digitales. La infraestructura material que hace posible la movilidad real.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="concept-tag bg-orange-50 text-orange-700">Estaciones de servicio</span>
+                            <span class="concept-tag bg-orange-50 text-orange-700">Hoteles</span>
+                            <span class="concept-tag bg-orange-50 text-orange-700">Asistencia mecánica</span>
+                            <span class="concept-tag bg-orange-50 text-orange-700">Plataformas digitales</span>
+                        </div>
+                    </div>
+
+                    <!-- 6. Sostenibilidad -->
+                    <div class="card-elevated pillar-card rounded-xl p-8 scroll-reveal">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="number-badge">6</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-gray-900">Sostenibilidad</h3>
+                                <p class="text-sm text-teal-600">Futuro responsable</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            Electromovilidad, reducción de huella de carbono, energías renovables y movilidad sustentable. El compromiso con las generaciones futuras.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="concept-tag bg-teal-50 text-teal-700">Electromovilidad</span>
+                            <span class="concept-tag bg-teal-50 text-teal-700">Cargadores EV</span>
+                            <span class="concept-tag bg-teal-50 text-teal-700">Huella de carbono</span>
+                            <span class="concept-tag bg-teal-50 text-teal-700">Energía limpia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilar 7: Comunicación -->
+                <div class="mt-6 scroll-reveal">
+                    <div class="card-elevated rounded-xl p-8 md:p-12 border-2 border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50">
+                        <div class="flex flex-col md:flex-row items-start gap-8">
+                            <div class="flex-shrink-0">
+                                <div class="number-badge w-16 h-16 text-2xl">7</div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-bold text-2xl text-gray-900 mb-2">Comunicación</h3>
+                                <p class="text-indigo-600 font-medium mb-4">El tejido conector del sistema</p>
+                                <p class="text-gray-600 leading-relaxed mb-6">
+                                    La comunicación no es un pilar más: es el <strong class="text-gray-900">sistema nervioso</strong> que conecta los otros seis pilares. Sin comunicación efectiva, los pilares operan en silos. Con ella, se convierten en un sistema inteligente y coordinado.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="concept-tag bg-indigo-50 text-indigo-700">Estrategia de marca</span>
+                                    <span class="concept-tag bg-indigo-50 text-indigo-700">Contenido educativo</span>
+                                    <span class="concept-tag bg-indigo-50 text-indigo-700">Relaciones públicas</span>
+                                    <span class="concept-tag bg-indigo-50 text-indigo-700">Digital</span>
+                                    <span class="concept-tag bg-indigo-50 text-indigo-700">Cultura organizacional</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marco de Pensamiento -->
+    <section class="py-20 md:py-28 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="font-display text-3xl md:text-4xl text-gray-900 mb-4">
+                        Cómo se construye el <span class="gradient-text">sistema</span>
+                    </h2>
+                    <p class="text-gray-600">El marco de pensamiento que guía cada acción del ACA</p>
+                </div>
+
+                <div class="scroll-reveal">
+                    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">🧠</div>
+                                <h4 class="font-bold text-lg text-gray-900 mb-2">1. Pensar el sistema</h4>
+                                <p class="text-gray-600 text-sm">Definir qué sistema de Movilidad quiere el ACA. Los 7 pilares como arquitectura deliberada.</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">📐</div>
+                                <h4 class="font-bold text-lg text-gray-900 mb-2">2. Diseñar proyectos</h4>
+                                <p class="text-gray-600 text-sm">Cada proyecto nace del sistema, no al revés. Se planifica dentro de la arquitectura definida.</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">⚡</div>
+                                <h4 class="font-bold text-lg text-gray-900 mb-2">3. Ejecutar acciones</h4>
+                                <p class="text-gray-600 text-sm">Las acciones concretas son la expresión operativa del sistema. Tienen sentido porque vienen de un marco.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 text-center">
+                            <div class="inline-block bg-accent text-white rounded-xl px-8 py-4">
+                                <p class="text-lg font-bold">Sistema → Proyectos → Acciones</p>
+                                <p class="text-blue-200 text-sm mt-1">Nunca al revés</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Línea de Tiempo -->
+    <section id="historia" class="py-20 md:py-28 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16 scroll-reveal">
+                    <h2 class="font-display text-3xl md:text-5xl text-gray-900 mb-4">
+                        1904 — <span class="gradient-text">2026</span>
+                    </h2>
+                    <p class="text-xl text-gray-600">122 años de sistema en funcionamiento</p>
+                </div>
+
+                <div class="relative">
+                    <div class="timeline-line hidden md:block"></div>
+
+                    <div class="space-y-12">
+                        <div class="relative flex items-center md:justify-between md:flex-row flex-col gap-8 scroll-reveal">
+                            <div class="md:w-5/12 md:text-right text-left pl-12 md:pl-0">
+                                <h3 class="font-bold text-xl text-gray-900">1904</h3>
+                                <p class="text-gray-600">Fundación del Automóvil Club Argentino. Nace el sistema con la primera idea de movilidad organizada en Argentina.</p>
+                            </div>
+                            <div class="absolute left-4 md:left-1/2 timeline-dot md:-translate-x-1/2"></div>
+                            <div class="md:w-5/12 pl-12 md:pl-0">
+                                <span class="concept-tag bg-gray-100 text-gray-700">Origen del sistema</span>
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-center md:justify-between md:flex-row-reverse flex-col gap-8 scroll-reveal">
+                            <div class="md:w-5/12 md:text-left text-left pl-12 md:pl-0">
+                                <h3 class="font-bold text-xl text-gray-900">1931</h3>
+                                <p class="text-gray-600">Se establece la Comisión Deportiva Automovilística (CDA) del ACA. Nace la estructura institucional del deporte motor argentino.</p>
+                            </div>
+                            <div class="absolute left-4 md:left-1/2 timeline-dot md:-translate-x-1/2"></div>
+                            <div class="md:w-5/12 pl-12 md:pl-0 md:text-right">
+                                <span class="concept-tag bg-red-50 text-red-700">Deporte Motor</span>
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-center md:justify-between md:flex-row flex-col gap-8 scroll-reveal">
+                            <div class="md:w-5/12 md:text-right text-left pl-12 md:pl-0">
+                                <h3 class="font-bold text-xl text-gray-900">1936</h3>
+                                <p class="text-gray-600">Acuerdo YPF-ACA. Consolidación de la infraestructura de servicios y expansión de la red de estaciones en todo el territorio nacional.</p>
+                            </div>
+                            <div class="absolute left-4 md:left-1/2 timeline-dot md:-translate-x-1/2"></div>
+                            <div class="md:w-5/12 pl-12 md:pl-0">
+                                <span class="concept-tag bg-orange-50 text-orange-700">Infraestructura</span>
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-center md:justify-between md:flex-row-reverse flex-col gap-8 scroll-reveal">
+                            <div class="md:w-5/12 md:text-left text-left pl-12 md:pl-0">
+                                <h3 class="font-bold text-xl text-gray-900">1962</h3>
+                                <p class="text-gray-600">Creación de la Escuela de Conducción del ACA. Formalización de la educación vial como pilar estructural del sistema de movilidad.</p>
+                            </div>
+                            <div class="absolute left-4 md:left-1/2 timeline-dot md:-translate-x-1/2"></div>
+                            <div class="md:w-5/12 pl-12 md:pl-0 md:text-right">
+                                <span class="concept-tag bg-blue-50 text-blue-700">Educación</span>
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-center md:justify-between md:flex-row flex-col gap-8 scroll-reveal">
+                            <div class="md:w-5/12 md:text-right text-left pl-12 md:pl-0">
+                                <h3 class="font-bold text-xl text-gray-900">1990-2010</h3>
+                                <p class="text-gray-600">Expansión corporativa y digitalización. Soluciones B2B, gestión de flotas, plataformas tecnológicas y profesionalización del servicio empresarial.</p>
+                            </div>
+                            <div class="absolute left-4 md:left-1/2 timeline-dot md:-translate-x-1/2"></div>
+                            <div class="md:w-5/12 pl-12 md:pl-0">
+                                <span class="concept-tag bg-green-50 text-green-700">Corporativo + Digital</span>
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-center md:justify-between md:flex-row-reverse flex-col gap-8 scroll-reveal">
+                            <div class="md:w-5/12 md:text-left text-left pl-12 md:pl-0">
+                                <h3 class="font-bold text-xl text-gray-900">2020-2024</h3>
+                                <p class="text-gray-600">Electromovilidad, sostenibilidad y consolidación del sistema integral. Reactivación del vínculo del Club con la FIA en movilidad y Motorsport.</p>
+                            </div>
+                            <div class="absolute left-4 md:left-1/2 timeline-dot md:-translate-x-1/2"></div>
+                            <div class="md:w-5/12 pl-12 md:pl-0 md:text-right">
+                                <span class="concept-tag bg-teal-50 text-teal-700">Sostenibilidad + FIA</span>
+                            </div>
+                        </div>
+
+                        <div class="relative flex items-center md:justify-between md:flex-row flex-col gap-8 scroll-reveal">
+                            <div class="md:w-5/12 md:text-right text-left pl-12 md:pl-0">
+                                <h3 class="font-bold text-2xl gradient-text">2026</h3>
+                                <p class="text-gray-900 font-medium">El sistema está completo. Movilidad como ideas, proyectos y acciones organizadas en 7 pilares interconectados.</p>
+                            </div>
+                            <div class="absolute left-4 md:left-1/2 w-5 h-5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 border-3 border-white shadow-lg shadow-blue-500/30 md:-translate-x-1/2"></div>
+                            <div class="md:w-5/12 pl-12 md:pl-0">
+                                <span class="concept-tag bg-blue-100 text-blue-800 font-bold">Sistema Integral ACA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusión -->
+    <section class="py-20 md:py-28 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center scroll-reveal">
+                <h2 class="font-display text-3xl md:text-5xl text-gray-900 mb-8">
+                    Movilidad con <span class="italic gradient-text">sentido</span>
+                </h2>
+
+                <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-gray-100">
+                    <p class="text-xl md:text-2xl text-gray-700 leading-relaxed mb-8">
+                        Cuando hablamos de Movilidad en el ACA, hablamos de un <strong class="text-gray-900">sistema operativo de 122 años</strong> que organiza ideas, proyectos y acciones en <strong class="text-gray-900">7 pilares estructurales</strong> para generar movilidad real, segura y sustentable.
+                    </p>
+
+                    <div class="grid md:grid-cols-3 gap-6 text-left">
+                        <div class="bg-blue-50 rounded-xl p-6 border border-blue-100">
+                            <div class="text-3xl mb-3">🎯</div>
+                            <h4 class="font-bold text-gray-900 mb-2">Apropiación con sentido</h4>
+                            <p class="text-gray-600 text-sm">Integramos tendencias en un sistema concreto y operativo.</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-xl p-6 border border-purple-100">
+                            <div class="text-3xl mb-3">⚙️</div>
+                            <h4 class="font-bold text-gray-900 mb-2">Sistema operativo</h4>
+                            <p class="text-gray-600 text-sm">7 pilares interconectados que funcionan en conjunto.</p>
+                        </div>
+                        <div class="bg-cyan-50 rounded-xl p-6 border border-cyan-100">
+                            <div class="text-3xl mb-3">🚀</div>
+                            <h4 class="font-bold text-gray-900 mb-2">Evolución constante</h4>
+                            <p class="text-gray-600 text-sm">Desde 1904, adaptándose sin perder la esencia del sistema.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12">
+                    <p class="text-2xl font-bold text-gray-900 mb-2 font-display">ACA · 1904-2026</p>
+                    <p class="text-blue-600">Sistema de Movilidad Integral</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-gray-900 font-bold font-display">A</div>
+                    <div>
+                        <p class="text-white font-bold font-display">Automóvil Club Argentino</p>
+                        <p class="text-xs text-gray-500">Sistema de Movilidad · 1904-2026</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 text-sm text-gray-500 justify-center">
+                    <span>Educación</span>
+                    <span>Deporte</span>
+                    <span>Corporativo</span>
+                    <span>Institucional</span>
+                    <span>Infraestructura</span>
+                    <span>Sostenibilidad</span>
+                    <span>Comunicación</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        const pdfBtn = document.getElementById('pdfBtn');
+        const pdfBtnMobile = document.getElementById('pdfBtnMobile');
+
+        function printPDF() {
+            document.querySelectorAll('.scroll-reveal').forEach(function(el) {
+                el.classList.add('visible');
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+            setTimeout(function() {
+                window.print();
+            }, 300);
+        }
+
+        if(pdfBtn) pdfBtn.addEventListener('click', printPDF);
+        if(pdfBtnMobile) pdfBtnMobile.addEventListener('click', printPDF);
+    });
+    </script>
+</body>
+</html>
